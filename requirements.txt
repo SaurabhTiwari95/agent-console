@@ -16,4 +16,4 @@ pydantic==2.14.3
 pydantic-settings==2.16.2
 # cost-capped-agent's own dependency, pinned here too so pip-audit covers it.
 # Held at the newest release that is at least two weeks old (supply-chain caution).
-anthropic==2.3.0
+anthropic==2.8.0
