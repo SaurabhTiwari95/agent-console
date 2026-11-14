@@ -1,0 +1,77 @@
+/* agent-console: small, dependency-free styles. No inline styles anywhere (strict CSP). */
+:root {
+  --bg: #f7f7f5;
+  --fg: #1d1d1f;
+  --muted: #6b6b70;
+  --card: #ffffff;
+  --line: #e2e2de;
+  --accent: #2f5bd3;
+  --ok: #1f7a4d;
+  --warn: #9a6200;
+  --bad: #b3261e;
+  --hl: #fff3bf;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #151517; --fg: #ececee; --muted: #9a9aa2; --card: #1f1f23; --line: #33333a; --accent: #8aa8ff; --hl: #4a4220; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.5; }
+main { max-width: 64rem; margin: 0 auto; padding: 1rem; }
+a { color: var(--accent); }
+h1 { font-size: 1.5rem; margin: 0.5rem 0 1rem; }
+h2 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; }
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 0.6rem 1rem; background: var(--card); border-bottom: 1px solid var(--line); }
+.top nav { display: flex; gap: 1rem; flex-wrap: wrap; }
+.top nav a { text-decoration: none; }
+.brand { font-weight: 700; text-decoration: none; color: var(--fg); }
+.logout { margin-left: auto; display: flex; gap: 0.5rem; align-items: center; }
+.who { color: var(--muted); font-size: 0.9rem; }
+.banner { margin: 0; padding: 0.4rem 1rem; background: var(--hl); font-size: 0.9rem; }
+footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 2rem 0; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; }
+.narrow { max-width: 28rem; margin: 2rem auto; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
+.big { font-size: 1.6rem; margin: 0.2rem 0; }
+.muted { color: var(--muted); }
+.error { color: var(--bad); font-weight: 600; }
+.notice { padding: 0.5rem 0.75rem; border-left: 3px solid var(--accent); background: var(--card); }
+label { display: block; font-weight: 600; margin: 0.5rem 0 0.25rem; }
+textarea, input { width: 100%; padding: 0.5rem; font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; }
+.inline { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.75rem; }
+.inline label { margin: 0; }
+.inline input { flex: 1; }
+button, .button { display: inline-block; padding: 0.5rem 1rem; margin-top: 0.5rem; font: inherit; color: #fff; background: var(--accent); border: 0; border-radius: 6px; cursor: pointer; text-decoration: none; }
+.inline button { margin-top: 0; }
+button[disabled] { opacity: 0.5; cursor: not-allowed; }
+button.link { background: none; color: var(--accent); padding: 0; margin: 0; }
+table { width: 100%; border-collapse: collapse; background: var(--card); }
+th, td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.nowrap { white-space: nowrap; }
+.scroll { overflow-x: auto; }
+.facts th { width: 14rem; color: var(--muted); font-weight: 500; }
+.status { display: inline-block; padding: 0 0.45rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; border: 1px solid currentColor; }
+.status.queued, .status.running { color: var(--accent); }
+.status.done { color: var(--ok); }
+.status.stopped { color: var(--warn); }
+.status.failed { color: var(--bad); }
+.question { font-size: 1.1rem; font-weight: 600; white-space: pre-wrap; }
+.answer { white-space: pre-wrap; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; }
+.steps code { word-break: break-all; }
+.hits li { margin-bottom: 0.75rem; }
+.snippet { color: var(--muted); }
+mark { background: var(--hl); color: inherit; }
+.path { word-break: break-all; }
+pre.file { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 0.5rem 0; overflow-x: auto; font-size: 0.85rem; }
+pre.file .line { display: block; padding: 0 0.75rem; }
+pre.file .line.hl { background: var(--hl); }
+pre.file .ln { display: inline-block; width: 3.5rem; color: var(--muted); user-select: none; }
+.pager { display: flex; gap: 1rem; margin: 1rem 0; }
+.checks { list-style: none; padding: 0; margin: 0; }
+progress { width: 100%; height: 0.9rem; }
+@media (max-width: 40rem) {
+  .logout { margin-left: 0; }
+  .facts th { width: auto; }
+}

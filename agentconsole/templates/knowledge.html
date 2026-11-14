@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Knowledge{% endblock %}
+{% block content %}
+<h1>Knowledge</h1>
+<p class="muted">What the agent has indexed. It searches and reads these files to answer.</p>
+<form method="get" action="/knowledge/search" class="inline">
+  <label for="q">Search</label>
+  <input id="q" name="q" type="search" maxlength="200" placeholder="for example: late fee">
+  <button type="submit">Search</button>
+</form>
+<form method="get" action="/knowledge" class="inline">
+  <label for="prefix">Folder</label>
+  <input id="prefix" name="prefix" maxlength="300" value="{{ prefix }}" placeholder="for example: handbook/">
+  <button type="submit">Filter</button>
+</form>
+<table>
+  <thead><tr><th>File</th><th class="num">Lines</th><th>Summary</th></tr></thead>
+  <tbody>
+  {% for f in files %}
+    <tr>
+      <td><a href="/knowledge/file?path={{ f.path|urlencode }}">{{ f.path }}</a></td>
+      <td class="num">{{ f.lines }}</td>
+      <td class="muted">{{ f.summary or "" }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="3" class="muted">No indexed files{% if prefix %} under {{ prefix }}{% endif %}.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<nav class="pager">
+  {% if page > 1 %}<a href="/knowledge?prefix={{ prefix|urlencode }}&amp;page={{ page - 1 }}">Previous</a>{% endif %}
+  {% if more %}<a href="/knowledge?prefix={{ prefix|urlencode }}&amp;page={{ page + 1 }}">Next</a>{% endif %}
+</nav>
+{% endblock %}

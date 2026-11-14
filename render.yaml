@@ -1,0 +1,42 @@
+# Render Blueprint: one free Docker web service. See docs/deploy.md for the one-time setup.
+# Deploys are triggered by CI (the deploy job) only after every check on main passes, so
+# Render's own auto-deploy on push is off.
+services:
+  - type: web
+    name: agent-console
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /readyz
+    autoDeploy: false
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: BASE_URL # https://<your-service>.onrender.com, exactly as registered with Google
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: SESSION_COOKIE_SECURE
+        value: "true"
+      - key: TRUST_PROXY_HEADERS # Render's proxy adds the client address to X-Forwarded-For
+        value: "true"
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: ALLOWED_EMAILS # comma-separated
+        sync: false
+      - key: CLAUDE_CLIENT
+        value: anthropic
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      # Tighter caps than the defaults for a public demo. Note: the free plan's disk is not
+      # persistent, so the spend ledger restarts empty after a deploy or an idle spin-down.
+      # Required: use a key from a Claude Console workspace with a monthly spend limit
+      # (docs/deploy.md, step 0.3). That limit is the cap that survives restarts.
+      - key: AGENT_RUN_CAP_USD
+        value: "0.10"
+      - key: AGENT_DAY_CAP_USD
+        value: "1.00"
+      - key: MAX_CONCURRENT_RUNS
+        value: "2"

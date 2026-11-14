@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Ask{% endblock %}
+{% block content %}
+<h1>Ask the agent</h1>
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+{% if active %}
+<p class="notice">Your question is <span class="status {{ active.status }}">{{ active.status }}</span>.
+  <a href="/requests/{{ active.id }}">See it</a>. You can ask the next one when it finishes.</p>
+{% endif %}
+<form method="post" action="/ask" class="card">
+  <input type="hidden" name="csrf_token" value="{{ csrf }}">
+  <label for="question">Question</label>
+  <textarea id="question" name="question" rows="4" minlength="3" maxlength="{{ max_chars }}" required>{{ question }}</textarea>
+  <label for="max_usd">Spend cap for this question (USD)</label>
+  <input id="max_usd" name="max_usd" type="number" step="0.01" min="0.01" max="{{ run_cap }}" value="{{ run_cap }}">
+  <p class="muted">At most ${{ run_cap }} per question, and ${{ day_cap }} per day across everyone.</p>
+  <button type="submit"{% if active %} disabled{% endif %}>Ask</button>
+</form>
+{% if recent %}
+<h2>Recent</h2>
+{% set rows = recent %}
+{% include "_rows.html" %}
+<p><a href="/history">All history</a></p>
+{% endif %}
+{% endblock %}

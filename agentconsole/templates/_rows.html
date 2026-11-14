@@ -1,0 +1,13 @@
+<table>
+  <thead><tr><th>Asked (UTC)</th><th>Status</th><th>Question</th><th class="num">Cost</th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+    <tr>
+      <td class="nowrap">{{ r.created_at[:19]|replace("T", " ") }}</td>
+      <td><span class="status {{ r.status }}">{{ r.status }}</span></td>
+      <td><a href="/requests/{{ r.id }}">{{ r.question|truncate(90) }}</a></td>
+      <td class="num">{{ r.usd|usd if r.usd else "-" }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Sign in{% endblock %}
+{% block content %}
+<section class="card narrow">
+  <h1>Sign in</h1>
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  {% if google %}
+  <p><a class="button" href="/auth/google">Sign in with Google</a></p>
+  <p class="muted">Only addresses on the allow-list get in.</p>
+  {% else %}
+  <p class="muted">Google sign-in isn't configured on this server.</p>
+  {% endif %}
+  {% if dev_login %}
+  <form method="post" action="/auth/dev-login" class="dev">
+    <input type="hidden" name="csrf_token" value="{{ csrf }}">
+    <button type="submit">Dev login as {{ dev_email }}</button>
+    <p class="muted">Local development only: refused outside localhost and in production.</p>
+  </form>
+  {% endif %}
+</section>
+{% endblock %}

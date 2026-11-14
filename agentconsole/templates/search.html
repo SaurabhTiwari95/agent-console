@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<h1>Search the index</h1>
+<form method="get" action="/knowledge/search" class="inline">
+  <label for="q">Words</label>
+  <input id="q" name="q" type="search" maxlength="200" value="{{ q }}">
+  <button type="submit">Search</button>
+</form>
+{% if q %}
+<p class="muted">{{ hits|length }} passage(s) for “{{ q }}”.</p>
+<ul class="hits">
+  {% for h in hits %}
+  <li>
+    <a href="/knowledge/file?path={{ h.path|urlencode }}&amp;from={{ h.start_line }}&amp;hl={{ h.start_line }}-{{ h.end_line }}">{{ h.path }}:{{ h.start_line }}-{{ h.end_line }}</a>
+    <div class="snippet">{{ h.snippet|highlight }}</div>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+<p><a href="/knowledge">All files</a></p>
+{% endblock %}

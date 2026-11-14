@@ -1,0 +1,14 @@
+.git
+.github
+.venv
+venv
+tests
+docs
+scripts
+data
+_deps
+**/__pycache__
+.env
+README.md
+CHANGELOG.md
+SECURITY.md

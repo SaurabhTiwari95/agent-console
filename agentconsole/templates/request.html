@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block head %}{% if r.active %}<meta http-equiv="refresh" content="2">{% endif %}{% endblock %}
+{% block title %}Question{% endblock %}
+{% block content %}
+<h1>Question</h1>
+<p class="question">{{ r.question }}</p>
+<p>Status: <span class="status {{ r.status }}">{{ r.status }}</span>
+  {% if r.active %}<span class="muted">(this page refreshes every 2 seconds)</span>{% endif %}</p>
+{% if not r.active %}
+  {% if r.answer %}
+  <h2>Answer</h2>
+  <div class="answer">{{ r.answer }}</div>
+  {% endif %}
+  {% if r.citations %}
+  <h2>Sources</h2>
+  <ul>
+    {% for c in r.citations %}
+    <li><a href="/knowledge/file?path={{ c.path|urlencode }}&amp;from={{ [c.start - 10, 1]|max }}&amp;hl={{ c.start }}-{{ c.end }}#L{{ c.start }}">{{ c.path }}:{{ c.start }}-{{ c.end }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <h2>Run</h2>
+  <table class="facts">
+    <tr><th>Stop reason</th><td>{{ r.stopped or "-" }}{% if r.detail %} ({{ r.detail }}){% endif %}</td></tr>
+    <tr><th>Steps / API calls</th><td>{{ r.steps or 0 }} / {{ r.calls or 0 }}</td></tr>
+    <tr><th>Cost</th><td>{{ r.usd|usd }} of a {{ r.cap_usd|usd }} cap</td></tr>
+    <tr><th>Asked / finished (UTC)</th><td>{{ r.created_at[:19]|replace("T", " ") }} / {{ (r.finished_at or "")[:19]|replace("T", " ") }}</td></tr>
+  </table>
+  {% if r.tool_calls %}
+  <h2>Steps</h2>
+  <ol class="steps">
+    {% for t in r.tool_calls %}
+    <li><code>{{ t.tool }}</code> <code class="muted">{{ t.input|tojson }}</code>{% if t.error %} <span class="status failed">error</span>{% endif %}</li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+{% endif %}
+<p><a href="/ask">Ask another question</a></p>
+{% endblock %}

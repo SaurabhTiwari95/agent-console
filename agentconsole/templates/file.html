@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ path }}{% endblock %}
+{% block content %}
+<h1 class="path">{{ path }}</h1>
+<p class="muted">{{ total }} lines{% if summary %} · {{ summary }}{% endif %}</p>
+<pre class="file">{% for n, line in shown %}<span id="L{{ n }}" class="line{% if hl[0] <= n <= hl[1] %} hl{% endif %}"><span class="ln">{{ n }}</span>{{ line }}
+</span>{% endfor %}</pre>
+<nav class="pager">
+  {% if start > 1 %}<a href="/knowledge/file?path={{ path|urlencode }}&amp;from={{ [start - window, 1]|max }}">Previous lines</a>{% endif %}
+  {% if end < total %}<a href="/knowledge/file?path={{ path|urlencode }}&amp;from={{ end + 1 }}">Next lines</a>{% endif %}
+</nav>
+<p><a href="/knowledge">All files</a></p>
+{% endblock %}

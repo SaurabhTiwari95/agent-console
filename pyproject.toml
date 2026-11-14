@@ -1,0 +1,31 @@
+[project]
+name = "agent-console"
+version = "0.1.0"
+description = "Web console for an AI agent: Google sign-in, ask page, knowledge pages, health and cost dashboard, auto-deploy"
+license = "MIT"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "--cov=agentconsole --cov-report=term-missing"
+
+[tool.coverage.run]
+branch = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["_deps"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S", "ASYNC"]
+ignore = ["B008"] # FastAPI's Depends() in defaults is the intended pattern
+
+[tool.ruff.lint.isort]
+known-first-party = ["agentconsole"]
+known-third-party = ["costagent"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S104", "S105", "S106", "E501"]

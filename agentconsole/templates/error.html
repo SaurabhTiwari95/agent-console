@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Error {{ status }}{% endblock %}
+{% block content %}
+<section class="card narrow">
+  <h1>{{ status }}</h1>
+  <p>{{ message }}</p>
+  <p class="muted">Request id: {{ rid }}</p>
+  <p><a href="/ask">Back to the console</a></p>
+</section>
+{% endblock %}

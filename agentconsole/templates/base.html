@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block head %}{% endblock %}
+  <title>{% block title %}agent-console{% endblock %} · agent-console</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/ask">agent-console</a>
+    {% if user %}
+    <nav>
+      <a href="/ask">Ask</a>
+      <a href="/history">History</a>
+      <a href="/knowledge">Knowledge</a>
+      <a href="/health">Health &amp; cost</a>
+    </nav>
+    <form class="logout" method="post" action="/logout">
+      <span class="who">{{ user }}</span>
+      <input type="hidden" name="csrf_token" value="{{ csrf }}">
+      <button type="submit" class="link">Sign out</button>
+    </form>
+    {% endif %}
+  </header>
+  {% if demo %}<p class="banner">Demo mode: answers come from an offline stand-in, not Claude. Costs shown are simulated.</p>{% endif %}
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>agent-console {{ version }}</footer>
+</body>
+</html>

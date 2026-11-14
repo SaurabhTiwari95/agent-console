@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}History{% endblock %}
+{% block content %}
+<h1>History</h1>
+{% if rows %}
+{% include "_rows.html" %}
+{% else %}
+<p class="muted">No questions{% if page > 1 %} on this page{% else %} yet. <a href="/ask">Ask one</a>{% endif %}.</p>
+{% endif %}
+<nav class="pager">
+  {% if page > 1 %}<a href="/history?page={{ page - 1 }}">Newer</a>{% endif %}
+  {% if more %}<a href="/history?page={{ page + 1 }}">Older</a>{% endif %}
+</nav>
+{% endblock %}

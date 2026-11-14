@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Health &amp; cost{% endblock %}
+{% block content %}
+<h1>Health &amp; cost</h1>
+<section class="grid">
+  <div class="card">
+    <h2>Today (UTC)</h2>
+    <p class="big">{{ summary.today_usd|usd }} <span class="muted">of {{ summary.day_cap_usd|usd }}</span></p>
+    <progress value="{{ '%.1f'|format(summary.today_pct) }}" max="100">{{ '%.0f'|format(summary.today_pct) }}%</progress>
+    <p class="muted">{{ summary.today_left_usd|usd }} left today · {{ summary.run_cap_usd|usd }} cap per question</p>
+  </div>
+  <div class="card">
+    <h2>Last {{ days }} days</h2>
+    <p class="big">{{ summary.total_usd|usd }}</p>
+    <p class="muted">Prompt cache hit rate {{ '%.0f'|format(summary.cache_hit_pct) }}%</p>
+  </div>
+  <div class="card">
+    <h2>Readiness</h2>
+    <ul class="checks">
+      {% for name, ok in checks.items() %}<li><span class="status {{ 'done' if ok else 'failed' }}">{{ 'ok' if ok else 'down' }}</span> {{ name|replace("_", " ") }}</li>{% endfor %}
+    </ul>
+    <p class="muted">Indexed files: {{ files }} · runs in flight: {{ in_flight }} · client: {{ client_kind }}</p>
+    <p class="muted">Answers: {{ models.answer }} · summaries: {{ models.summary }}</p>
+  </div>
+</section>
+
+<h2>Spend per day</h2>
+<table>
+  <thead><tr><th>Day</th><th class="num">USD</th></tr></thead>
+  <tbody>
+  {% for day, amount in summary.per_day %}<tr><td>{{ day }}</td><td class="num">{{ amount|usd }}</td></tr>
+  {% else %}<tr><td colspan="2" class="muted">No spend in this period.</td></tr>{% endfor %}
+  </tbody>
+</table>
+
+<h2>Spend per day and model</h2>
+<div class="scroll">
+<table>
+  <thead><tr><th>Day</th><th>Model</th><th>Purpose</th><th class="num">Calls</th><th class="num">Input</th><th class="num">Output</th><th class="num">Cache read</th><th class="num">Hit</th><th class="num">USD</th></tr></thead>
+  <tbody>
+  {% for r in summary.rows %}
+    <tr><td>{{ r.day }}</td><td>{{ r.model }}</td><td>{{ r.purpose }}</td><td class="num">{{ r.calls }}</td>
+      <td class="num">{{ r.input_tokens }}</td><td class="num">{{ r.output_tokens }}</td><td class="num">{{ r.cache_read }}</td>
+      <td class="num">{{ '%.0f'|format(r.cache_hit_pct) }}%</td><td class="num">{{ r.usd|usd }}</td></tr>
+  {% else %}<tr><td colspan="9" class="muted">No spend in this period.</td></tr>{% endfor %}
+  </tbody>
+</table>
+</div>
+
+<h2>Last runs</h2>
+<table>
+  <thead><tr><th>Asked (UTC)</th><th>Status</th><th>Stop reason</th><th class="num">Steps</th><th class="num">Cost</th></tr></thead>
+  <tbody>
+  {% for r in recent %}
+    <tr><td class="nowrap">{{ r.created_at[:19]|replace("T", " ") }}</td><td><span class="status {{ r.status }}">{{ r.status }}</span></td>
+      <td>{{ r.stopped or "-" }}{% if r.detail %} <span class="muted">({{ r.detail }})</span>{% endif %}</td>
+      <td class="num">{{ r.steps or 0 }}</td><td class="num">{{ r.usd|usd if r.usd else "-" }}</td></tr>
+  {% else %}<tr><td colspan="5" class="muted">No finished runs yet.</td></tr>{% endfor %}
+  </tbody>
+</table>
+<p class="muted">All runs by status: {% for k, v in counts.items() %}{{ k }} {{ v }}{% if not loop.last %} · {% endif %}{% else %}none{% endfor %}</p>
+{% endblock %}

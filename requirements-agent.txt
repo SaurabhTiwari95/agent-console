@@ -1,0 +1,4 @@
+# The agent this console fronts, from its tagged GitHub release.
+# Push cost-capped-agent (tag v0.1.0) first.
+# Working next to a local clone instead? Skip this file and run:  pip install -e ../cost-capped-agent
+cost-capped-agent @ git+https://github.com/SaurabhTiwari95/cost-capped-agent@v0.1.0
