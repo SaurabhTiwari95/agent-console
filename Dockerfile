@@ -1,5 +1,5 @@
 # --- build stage: install dependencies (git is needed only here, to fetch cost-capped-agent) ----------
-FROM python:3.12-slim AS build
+FROM python:3.15-slim AS build
 RUN apt-get update \
  && apt-get install -y --no-install-recommends git \
  && rm -rf /var/lib/apt/lists/*
@@ -8,7 +8,7 @@ COPY requirements.txt requirements-agent.txt ./
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt -r requirements-agent.txt
 
 # --- runtime stage: small image, non-root user, no git -------------------------------------------------
-FROM python:3.12-slim
+FROM python:3.15-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     CONSOLE_DB_PATH=/data/console.db \
