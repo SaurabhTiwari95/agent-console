@@ -10,7 +10,7 @@ authlib==1.9.5
 joserfc==1.8.0
 cryptography==50.0.2
 # Authlib and the Anthropic SDK both use httpx2 for outbound HTTP.
-httpx2==2.16.0
+httpx2==2.16.2
 httpcore2==2.16.0
 pydantic==2.14.3
 pydantic-settings==2.16.2
